@@ -44,7 +44,7 @@ $ monotes download 'schultyy/monotes'
 ### Browse downloaded issues
 
 ```bash
-$ monotes show monotes
+$ monotes show 'schultyy/monotes'
 ```
 
 ## Contributing

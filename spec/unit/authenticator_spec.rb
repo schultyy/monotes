@@ -1,12 +1,14 @@
 require 'spec_helper'
 require 'monotes/authenticator'
+require 'octokit'
 
 describe Monotes::Authenticator do
+  let(:api_client_mock) { double('Octokit::Client') }
+  let(:username) { 'Jim' }
+  let(:password) { 'passw' }
+  let(:expected_token) { 'expected_token' }
+
   context 'without 2FA' do
-    let(:api_client_mock) { double('Octokit::Client') }
-    let(:username) { 'Jim' }
-    let(:password) { 'passw' }
-    let(:expected_token) { 'expected_token' }
     subject(:authenticator) { Monotes::Authenticator.new { |user, pass| api_client_mock } }
 
     before do
@@ -19,6 +21,17 @@ describe Monotes::Authenticator do
     end
   end
   context 'with 2FA' do
+    subject(:authenticator) { Monotes::Authenticator.new { |user, pass| api_client_mock } }
 
+    before do
+      params = { :scopes => ["user"], :note => Monotes::Authenticator::ACCESS_NOTE }
+      allow(api_client_mock).to receive(:create_authorization).with(params).and_raise(Octokit::OneTimePasswordRequired)
+    end
+
+    it 'authenticates and asks for 2-FA token' do
+      block_called = false
+      authenticator.get_oauth_token(username, password) { block_called = true }
+      expect(block_called).to be true
+    end
   end
 end

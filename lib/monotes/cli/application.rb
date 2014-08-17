@@ -35,7 +35,7 @@ module Monotes
         abs_path = File.join(folder, "#{repository}.yaml")
         issues = YAML.load_file(abs_path)
         issues.map do |issue|
-          STDOUT.puts issue.fetch(:title)
+          STDOUT.puts "#{issue.fetch(:number)} - #{issue.fetch(:title)}"
         end
       end
 

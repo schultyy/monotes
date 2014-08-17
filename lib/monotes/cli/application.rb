@@ -43,7 +43,32 @@ module Monotes
         end
       end
 
+      desc "create TITLE", "Creates a new local issue"
+      def create(title)
+        folder = File.expand_path("~/.monotes")
+        body_text = File.join(folder, "ISSUE_BODY_TEXT")
+        edit_success = system "vim #{body_text}"
+        if edit_success
+          issue = Monotes::Models::Issue.new(:title => title, :body => issue_body_text)
+          flush_issue_body_text
+        end
+      end
+
       private
+
+      def flush_issue_body_text
+        folder = File.expand_path("~/.monotes")
+        body_text_path = File.join(folder, "ISSUE_BODY_TEXT")
+
+        File.delete(body_text_path)
+      end
+
+      def issue_body_text
+        folder = File.expand_path("~/.monotes")
+        body_text_path = File.join(folder, "ISSUE_BODY_TEXT")
+        File.read(body_text_path)
+      end
+
       def save_issues(repository, issues)
         folder = File.expand_path("~/.monotes")
         if !File.directory?(folder)

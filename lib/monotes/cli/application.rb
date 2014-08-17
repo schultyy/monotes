@@ -4,10 +4,14 @@ require 'netrc'
 require 'octokit'
 require 'monotes/authenticator'
 require 'monotes/models/issue'
+require 'monotes/app_directory'
+require 'monotes/body_text'
 
 module Monotes
   module CLI
     class Application < Thor
+      include Monotes::AppDirectory
+
       desc "login", "Login into GitHub"
       def login
         print "Username > "
@@ -34,9 +38,8 @@ module Monotes
 
       desc "show REPOSITORY", "Show downloaded issues"
       def show(repository)
-        folder = File.expand_path("~/.monotes")
         repo_id = split_repository_identifier(repository)
-        abs_path = File.join(folder, repo_id[:username], "#{repo_id[:repository]}.yaml")
+        abs_path = File.join(app_path, repo_id[:username], "#{repo_id[:repository]}.yaml")
         issues = YAML.load_file(abs_path)
         issues.map do |issue|
           STDOUT.puts "#{issue.fetch(:number)} - #{issue.fetch(:title)}"
@@ -45,37 +48,18 @@ module Monotes
 
       desc "create TITLE", "Creates a new local issue"
       def create(title)
-        folder = File.expand_path("~/.monotes")
-        body_text = File.join(folder, "ISSUE_BODY_TEXT")
-        edit_success = system "vim #{body_text}"
-        if edit_success
-          issue = Monotes::Models::Issue.new(:title => title, :body => issue_body_text)
-          flush_issue_body_text
-        end
+        text = Monotes::BodyText.new(title)
+        issue = text.create_issue
       end
 
       private
 
-      def flush_issue_body_text
-        folder = File.expand_path("~/.monotes")
-        body_text_path = File.join(folder, "ISSUE_BODY_TEXT")
-
-        File.delete(body_text_path)
-      end
-
-      def issue_body_text
-        folder = File.expand_path("~/.monotes")
-        body_text_path = File.join(folder, "ISSUE_BODY_TEXT")
-        File.read(body_text_path)
-      end
-
       def save_issues(repository, issues)
-        folder = File.expand_path("~/.monotes")
-        if !File.directory?(folder)
-          Dir.mkdir(folder)
+        if !File.directory?(app_path)
+          Dir.mkdir(app_path)
         end
         repo_id = split_repository_identifier(repository)
-        user_folder = File.join(folder, repo_id[:username])
+        user_folder = File.join(app_path, repo_id[:username])
         Dir.mkdir(user_folder) if !File.directory?(user_folder)
         File.open(File.join(user_folder, "#{repo_id[:repository]}.yaml"), "w") do |handle|
           handle.write(issues.to_yaml)

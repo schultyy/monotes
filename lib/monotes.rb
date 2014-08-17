@@ -1,5 +1,5 @@
 require "monotes/version"
+require "monotes/cli/application"
 
 module Monotes
-  # Your code goes here...
 end

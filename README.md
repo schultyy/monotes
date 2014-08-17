@@ -1,6 +1,6 @@
 # Monotes
 
-TODO: Write a gem description
+Monotes is a GitHub Issues commandline client.
 
 ## Installation
 
@@ -18,7 +18,22 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Login to GitHub
+
+```bash
+$ monotes login
+Username: <your usename>
+Password: <Password>
+```
+
+### Login with Two-Factor Authentication
+
+```bash
+$ monotes login
+Username: <your usename>
+Password: <Password>
+Your 2FA token: <Token>
+```
 
 ## Contributing
 

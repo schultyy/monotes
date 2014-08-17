@@ -26,7 +26,17 @@ module Monotes
       def download(repository)
         puts "Downloading issues for #{repository}..."
         issues = Octokit.list_issues(repository)
-        save_issues(repository, issues)
+        save_issues(repository, issues.map{|i|i.to_hash})
+      end
+
+      desc "show REPOSITORY", "Show downloaded issues"
+      def show(repository)
+        folder = File.expand_path("~/.monotes")
+        abs_path = File.join(folder, "#{repository}.yaml")
+        issues = YAML.load_file(abs_path)
+        issues.map do |issue|
+          STDOUT.puts issue.fetch(:title)
+        end
       end
 
       private
@@ -36,10 +46,7 @@ module Monotes
           Dir.mkdir(folder)
         end
         repository_name = repository.split('/').last
-        puts "REPO NAME #{repository_name}"
-        abs_path = File.join(folder, "#{repository_name}.yaml")
-        puts "ABS PATH #{abs_path}"
-        File.open(abs_path, "w") do |handle|
+        File.open(File.join(folder, "#{repository_name}.yaml"), "w") do |handle|
           handle.write(issues.to_yaml)
         end
       end

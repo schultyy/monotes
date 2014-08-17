@@ -41,6 +41,12 @@ Your 2FA token: <Token>
 $ monotes download 'schultyy/monotes'
 ```
 
+### Browse downloaded issues
+
+```bash
+$ monotes show monotes
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/monotes/fork )

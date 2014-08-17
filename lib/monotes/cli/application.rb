@@ -1,4 +1,5 @@
 require 'thor'
+require 'yaml'
 require 'netrc'
 require 'octokit'
 require 'monotes/authenticator'
@@ -21,7 +22,28 @@ module Monotes
         write_to_netrc(username, oauth_token.token)
       end
 
+      desc "download REPOSITORY", "Download issues for a repository"
+      def download(repository)
+        puts "Downloading issues for #{repository}..."
+        issues = Octokit.list_issues(repository)
+        save_issues(repository, issues)
+      end
+
       private
+      def save_issues(repository, issues)
+        folder = File.expand_path("~/.monotes")
+        if !File.directory?(folder)
+          Dir.mkdir(folder)
+        end
+        repository_name = repository.split('/').last
+        puts "REPO NAME #{repository_name}"
+        abs_path = File.join(folder, "#{repository_name}.yaml")
+        puts "ABS PATH #{abs_path}"
+        File.open(abs_path, "w") do |handle|
+          handle.write(issues.to_yaml)
+        end
+      end
+
       def write_to_netrc(username, token)
         netrc_handle = Netrc.read
         netrc_handle["api.github.com"] = username, token

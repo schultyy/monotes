@@ -7,10 +7,10 @@ Gem::Specification.new do |spec|
   spec.name          = "monotes"
   spec.version       = Monotes::VERSION
   spec.authors       = ["Jan Schulte"]
-  spec.email         = ["hello@unexpected-co.de"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.email         = ["schulte@unexpected-co.de"]
+  spec.summary       = %q{GitHub Issues commandline client}
+  spec.description   = %q{GitHub Issues commandline client}
+  spec.homepage      = "https://github.com/schultyy/monotes"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

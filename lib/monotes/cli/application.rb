@@ -5,7 +5,11 @@ module Monotes
     class Application < Thor
       desc "login", "Login into GitHub"
       def login
-        puts "logging in"
+        print "Username > "
+        username = STDIN.gets.chomp
+        print("Password > ")
+        password = STDIN.noecho(&:gets).chomp
+
       end
     end
   end

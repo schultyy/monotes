@@ -6,6 +6,7 @@ require 'monotes/authenticator'
 require 'monotes/models/issue'
 require 'monotes/app_directory'
 require 'monotes/body_text'
+require 'monotes/sync_list'
 
 module Monotes
   module CLI
@@ -46,13 +47,20 @@ module Monotes
         end
       end
 
-      desc "create TITLE", "Creates a new local issue"
-      def create(title)
+      desc "create REPOSITORY TITLE", "Creates a new local issue"
+      def create(repository, title)
         text = Monotes::BodyText.new(title)
         issue = text.create_issue
+        sync_list.record(repository, issue)
+        sync_list.save
       end
 
       private
+
+
+      def sync_list
+        @sync_list ||= Monotes::SyncList.new
+      end
 
       def save_issues(repository, issues)
         if !File.directory?(app_path)

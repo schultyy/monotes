@@ -20,5 +20,10 @@ module Monotes
       @list.values.flatten.length
     end
 
+    def save
+      File.open(File.join(app_path, FILENAME), 'w') do |handle|
+        handle.write(@list.to_yaml)
+      end
+    end
   end
 end

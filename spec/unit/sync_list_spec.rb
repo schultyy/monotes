@@ -1,9 +1,8 @@
 require 'spec_helper'
-require 'fakefs/spec_helpers'
+require 'fakefs'
 require 'monotes/sync_list'
 
 describe Monotes::SyncList do
-  include FakeFS::SpecHelpers
   let(:issue) { double('Issue') }
   subject(:list) { Monotes::SyncList.new }
 
@@ -15,5 +14,4 @@ describe Monotes::SyncList do
   it 'records a new issue' do
     expect(list.unsynced_count).to eq 1
   end
-
 end

@@ -39,8 +39,8 @@ module Monotes
 
       desc "show REPOSITORY", "Show downloaded issues"
       def show(repository)
-        repo_id = split_repository_identifier(repository)
-        abs_path = File.join(app_path, repo_id[:username], "#{repo_id[:repository]}.yaml")
+        username, repository = split_repository_identifier(repository)
+        abs_path = File.join(app_path, username, "#{repository}.yaml")
         issues = YAML.load_file(abs_path)
         issues.map do |issue|
           STDOUT.puts "#{issue.fetch(:number)} - #{issue.fetch(:title)}"
@@ -57,7 +57,6 @@ module Monotes
 
       private
 
-
       def sync_list
         @sync_list ||= Monotes::SyncList.new
       end
@@ -66,20 +65,16 @@ module Monotes
         if !File.directory?(app_path)
           Dir.mkdir(app_path)
         end
-        repo_id = split_repository_identifier(repository)
-        user_folder = File.join(app_path, repo_id[:username])
+        username, repository = split_repository_identifier(repository)
+        user_folder = File.join(app_path, username)
         Dir.mkdir(user_folder) if !File.directory?(user_folder)
-        File.open(File.join(user_folder, "#{repo_id[:repository]}.yaml"), "w") do |handle|
+        File.open(File.join(user_folder, "#{repository}.yaml"), "w") do |handle|
           handle.write(issues.to_yaml)
         end
       end
 
       def split_repository_identifier(repo)
-        parts = repo.split('/')
-        {
-          username: parts.first,
-          repository: parts.last
-        }
+        repo.split('/')
       end
 
       def write_to_netrc(username, token)

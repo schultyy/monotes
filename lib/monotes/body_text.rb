@@ -21,6 +21,7 @@ module Monotes
       edit_success = system "vim #{path}"
       if edit_success
         body_text = read
+        flush
         Monotes::Models::Issue.new(:title => @title, :body => body_text)
       else
         nil

@@ -1,3 +1,5 @@
+[![Build
+Status](https://travis-ci.org/schultyy/monotes.svg?branch=master)](https://travis-ci.org/schultyy/monotes)
 # Monotes
 
 Monotes is a GitHub Issues commandline client.

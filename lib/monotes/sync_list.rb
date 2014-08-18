@@ -6,7 +6,8 @@ module Monotes
     include Monotes::AppDirectory
     FILENAME = "unsynced.yaml"
 
-    def initialize
+    def initialize(fs)
+      @fs = fs
       @list = {}
     end
 
@@ -21,9 +22,7 @@ module Monotes
     end
 
     def save
-      File.open(File.join(app_path, FILENAME), 'w') do |handle|
-        handle.write(@list.to_yaml)
-      end
+      @fs.save(FILENAME, @list.to_yaml)
     end
   end
 end

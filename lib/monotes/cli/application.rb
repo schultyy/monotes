@@ -32,7 +32,8 @@ module Monotes
       def download(repository)
         puts "Downloading issues for #{repository}..."
         issues = Octokit.list_issues(repository)
-        save_issues(repository, issues.map do |issue|
+        username, repository = split_repository_identifier(repository)
+        save_issues(username, repository, issues.map do |issue|
           Monotes::Models::Issue.new(issue).to_hash
         end)
       end
@@ -40,8 +41,7 @@ module Monotes
       desc "show REPOSITORY", "Show downloaded issues"
       def show(repository)
         username, repository = split_repository_identifier(repository)
-        abs_path = File.join(app_path, username, "#{repository}.yaml")
-        issues = YAML.load_file(abs_path)
+        issues = load_issues(repository, username)
         issues.map do |issue|
           STDOUT.puts "#{issue.fetch(:number)} - #{issue.fetch(:title)}"
         end
@@ -51,8 +51,10 @@ module Monotes
       def create(repository, title)
         text = Monotes::BodyText.new(title)
         issue = text.create_issue
-        sync_list.record(repository, issue)
-        sync_list.save
+        username, repository = split_repository_identifier(repository)
+        issues = load_issues(repository, username)
+        issues << issue.to_hash
+        save_issues(username, repository, issues)
       end
 
       private
@@ -61,11 +63,15 @@ module Monotes
         @sync_list ||= Monotes::SyncList.new
       end
 
-      def save_issues(repository, issues)
+      def load_issues(repository, username)
+        abs_path = File.join(app_path, username, "#{repository}.yaml")
+        YAML.load_file(abs_path)
+      end
+
+      def save_issues(username, repository, issues)
         if !File.directory?(app_path)
           Dir.mkdir(app_path)
         end
-        username, repository = split_repository_identifier(repository)
         user_folder = File.join(app_path, username)
         Dir.mkdir(user_folder) if !File.directory?(user_folder)
         File.open(File.join(user_folder, "#{repository}.yaml"), "w") do |handle|

@@ -5,13 +5,14 @@ module Monotes
     class Issue
       include Virtus.model
       attribute :url, String
-      attribute :id, Fixnum
-      attribute :number, Fixnum
+      attribute :id, Fixnum, :default => 0
+      attribute :number, Fixnum, :default => 0
       attribute :title, String
       attribute :state, String
       attribute :created_at, DateTime
       attribute :updated_at, DateTime
       attribute :body, String
+      attribute :unsynced, Boolean, :default => true
     end
   end
 end

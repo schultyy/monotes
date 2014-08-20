@@ -1,3 +1,5 @@
+require 'factory_girl'
+
 RSpec.configure do |config|
   config.filter_run :focus
   config.run_all_when_everything_filtered = true
@@ -11,6 +13,10 @@ RSpec.configure do |config|
   config.order = :random
 
   Kernel.srand config.seed
+
+  config.include FactoryGirl::Syntax::Methods
+  FactoryGirl.definition_file_paths = [File.expand_path('../factories', __FILE__)]
+  FactoryGirl.find_definitions
 
   config.expect_with :rspec do |expectations|
     expectations.syntax = :expect

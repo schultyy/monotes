@@ -8,7 +8,7 @@ module Monotes
     end
 
     def sync
-      @list.each do |issue|
+      @list.find_all {|issue| issue.unsynced }.each do |issue|
         @adapter.create_issue(@repository, issue.title, issue.body)
       end
     end

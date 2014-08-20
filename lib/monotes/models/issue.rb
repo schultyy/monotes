@@ -12,7 +12,10 @@ module Monotes
       attribute :created_at, DateTime
       attribute :updated_at, DateTime
       attribute :body, String
-      attribute :unsynced, Boolean, :default => true
+
+      def unsynced
+        number == 0
+      end
     end
   end
 end

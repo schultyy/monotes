@@ -30,8 +30,8 @@ describe Monotes::SyncList do
   end
 
   context '#sync' do
-    let(:unsynced_issues) { build_list(:issue, 1, number: 0, title: 'foo', body:'bar', unsynced: true) }
-    let(:synced_issues) { build_list(:issue, 1, number: 45, title: 'baz', body:'yadda yadda', unsynced: false) }
+    let(:unsynced_issues) { build_list(:issue, 1, number: 0, title: 'foo', body:'bar') }
+    let(:synced_issues) { build_list(:issue, 1, number: 45, title: 'baz', body:'yadda yadda') }
 
     before(:each) do
       allow(adapter).to receive(:create_issue)

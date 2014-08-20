@@ -19,4 +19,7 @@ describe Monotes::SyncList do
     end
   end
 
+  context '#synchronize' do
+
+  end
 end

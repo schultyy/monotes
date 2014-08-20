@@ -57,11 +57,16 @@ module Monotes
         save_issues(username, repository, issues)
       end
 
-      private
-
-      def sync_list
-        @sync_list ||= Monotes::SyncList.new
+      desc "sync REPOSITORY", "Synchronizes local issues with GitHub"
+      def sync(repository)
+        username, repo_name = split_repository_identifier(repository)
+        issues = load_issues(repo_name, username).map { |i| Monotes::Models::Issue.new(i) }
+        adapter = Octokit::Client.new(netrc: true)
+        sync_list = Monotes::SyncList.new(list: issues, repo: repository, adapter: adapter)
+        sync_list.sync
       end
+
+      private
 
       def load_issues(repository, username)
         abs_path = File.join(app_path, username, "#{repository}.yaml")

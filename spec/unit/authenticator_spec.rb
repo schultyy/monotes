@@ -27,7 +27,7 @@ describe Monotes::Authenticator do
     subject(:authenticator) { Monotes::Authenticator.new(api_client_mock_class) }
 
     before do
-      params = { :scopes => ["user"], :note => Monotes::Authenticator::ACCESS_NOTE }
+      params = { :scopes => ["user", "repo"], :note => Monotes::Authenticator::ACCESS_NOTE }
       params_with_2fa = params.merge(:headers => { "X-GitHub-OTP" => two_fa_token })
       allow(api_client_mock_class).to receive(:new).with(any_args).and_return(api_client_mock)
       allow(api_client_mock).to receive(:create_authorization).with(params).and_raise(Octokit::OneTimePasswordRequired)

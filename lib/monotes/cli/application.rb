@@ -23,7 +23,7 @@ module Monotes
         print "Password > "
         password = STDIN.noecho(&:gets).chomp
         validate!("password", password)
-        puts "\n"
+        STDOUT.puts "\n"
         authenticator = Monotes::Authenticator.new(Octokit::Client)
         begin
           oauth_token = authenticator.get_oauth_token(username, password) do
@@ -33,7 +33,7 @@ module Monotes
             token
           end
         rescue Octokit::Unauthorized => unauthorized
-          puts "Unauthorized: #{unauthorized.message}"
+          STDERR.puts "Unauthorized: #{unauthorized.message}"
           exit 77
         rescue Exception => e
           fatal!(e)
@@ -45,7 +45,7 @@ module Monotes
 
       desc "download REPOSITORY", "Download issues for a repository"
       def download(repository)
-        puts "Downloading issues for #{repository}..."
+        STDOUT.puts "Downloading issues for #{repository}..."
         downloader = Monotes::IssueDownload.new(Octokit)
         begin
           issues = downloader.download(repository)
@@ -82,7 +82,7 @@ module Monotes
         begin
           sync_list = Monotes::SyncList.new(list: issues, repo: repository_name, adapter: adapter)
           synced = sync_list.sync do |issue|
-            puts "Synced issue #{issue.title}"
+            STDOUT.puts "Synced issue #{issue.title}"
           end
         rescue Exception => exc
           fatal!(exc)
@@ -93,13 +93,13 @@ module Monotes
       private
 
       def fatal!(exc)
-        puts "FATAL: #{exc.message}"
+        STDERR.puts "FATAL: #{exc.message}"
         exit 74
       end
 
       def validate!(name, param)
         if param.nil? || param.empty?
-          puts "Fatal: #{name} cannot be empty"
+          STDERR.puts "Fatal: #{name} cannot be empty"
           exit 74
         end
       end

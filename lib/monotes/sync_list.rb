@@ -10,7 +10,7 @@ module Monotes
     end
 
     def sync
-      unsynced = @list.find_all {|issue| issue.unsynced }
+      unsynced = @list.find_all {|issue| issue.unsynced? }
       unsynced.map do |issue|
         result = @adapter.create_issue(@repository, issue.title, issue.body)
         yield(result) if block_given?

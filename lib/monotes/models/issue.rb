@@ -13,7 +13,7 @@ module Monotes
       attribute :updated_at, DateTime
       attribute :body, String
 
-      def unsynced
+      def unsynced?
         number == 0
       end
     end

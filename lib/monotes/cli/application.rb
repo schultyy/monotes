@@ -77,7 +77,7 @@ module Monotes
       def sync(repository_name)
         repository = Monotes::IssueRepository.build(repository: repository_name)
         issues = repository.load
-        already_synced = issues.reject { |i| i.unsynced }
+        already_synced = issues.reject { |i| i.unsynced? }
         adapter = Octokit::Client.new(netrc: true)
         begin
           sync_list = Monotes::SyncList.new(list: issues, repo: repository_name, adapter: adapter)

@@ -62,7 +62,7 @@ describe Monotes::SyncList do
         context 'issue' do
           it 'has number' do
             result = sync_list.sync.first
-            expect(result.unsynced).to be false
+            expect(result.unsynced?).to be false
           end
           it 'has id' do
             result = sync_list.sync.first

@@ -53,9 +53,7 @@ module Monotes
         text = Monotes::BodyText.new(title)
         issue = text.create_issue
         repository = Monotes::IssueRepository.build(repository: repository_name)
-        issues = repository.load
-        issues << issue.to_hash
-        repository.save(issues)
+        repository.append(issue)
       end
 
       desc "sync REPOSITORY", "Synchronizes local issues with GitHub"

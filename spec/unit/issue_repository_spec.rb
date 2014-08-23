@@ -52,4 +52,24 @@ describe Monotes::IssueRepository do
       end
     end
   end
+
+  context '#append' do
+    before do
+      allow(context).to receive(:save)
+      allow(context).to receive(:load).and_return(attributes_for_list(:issue, 1))
+      repository.append(build(:issue))
+    end
+
+    it 'loads issues' do
+      expect(context).to have_received(:load)
+    end
+
+    it 'saves with appended issue' do
+      expect(context).to have_received(:save)
+    end
+
+    it 'raises error when issue is nil' do
+      expect { repository.append(nil) }.to raise_error(ArgumentError)
+    end
+  end
 end

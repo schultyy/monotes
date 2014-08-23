@@ -16,6 +16,13 @@ module Monotes
       @context.save(*@repository.split('/'), issues)
     end
 
+    def append(new_issue)
+      raise ArgumentError, 'issue must not be nil' if new_issue.nil?
+      issues = load
+      issues << new_issue
+      save(issues)
+    end
+
     def load
       @context.load(*@repository.split('/')).map do |issue_hash|
         Monotes::Models::Issue.new(issue_hash)

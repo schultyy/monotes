@@ -49,6 +49,22 @@ $ monotes download 'schultyy/monotes'
 $ monotes show 'schultyy/monotes'
 ```
 
+### Create a new issue
+
+```bash
+$ monotes create 'schultyy/monotes' <title>
+```
+
+Then `vim` opens and you can insert your issue content in markdown. When
+you save and quit, the issue gets created.
+
+
+### Sync issues
+
+```bash
+$ monotes sync 'schultyy/monotes'
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/monotes/fork )

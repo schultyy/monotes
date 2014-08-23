@@ -59,7 +59,12 @@ module Monotes
       desc "show REPOSITORY", "Show downloaded issues"
       def show(repository_name)
         repository = Monotes::IssueRepository.build(repository: repository_name)
-        issues = repository.load
+        begin
+          issues = repository.load
+        rescue Exception => exc
+          fatal!(exc)
+        end
+
         issues.map do |issue|
           if issue.unsynced?
             STDOUT.puts "(new) - #{issue.title}"

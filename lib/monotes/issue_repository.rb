@@ -1,7 +1,7 @@
 require 'yaml'
 
 module Monotes
-  class IssueList
+  class IssueRepository
 
     def initialize(args)
       @fs = args.fetch(:fs)

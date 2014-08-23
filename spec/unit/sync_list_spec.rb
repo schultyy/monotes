@@ -35,20 +35,21 @@ describe Monotes::SyncList do
     let(:issue_result) { double('Issue Result') }
 
     before(:each) do
+      allow(issue_result).to receive(:number).and_return(1)
       allow(adapter).to receive(:create_issue) { issue_result }
-      sync_list.sync
     end
 
     context 'with unsynced issues' do
       subject(:sync_list) { Monotes::SyncList.new(list: unsynced_issues, adapter: adapter, repo: repo_name) }
 
       it 'calls adapter to create issue' do
+        sync_list.sync
         expect(adapter).to have_received(:create_issue).with(repo_name, 'foo', 'bar')
       end
 
       it 'calls block for each issue' do
         block_called = false
-        sync_list.sync { block_called = true }
+        sync_list.sync { |issue| block_called = true }
         expect(block_called).to be true
       end
 
@@ -57,12 +58,22 @@ describe Monotes::SyncList do
         sync_list.sync { |issue| block_result = issue }
         expect(block_result).to eq issue_result
       end
+
+      context 'after sync' do
+        context 'issue' do
+          it 'has number' do
+            result = sync_list.sync.first
+            expect(result.unsynced).to be false
+          end
+        end
+      end
     end
 
     context 'with synced and unsynced issues' do
       subject(:sync_list) { Monotes::SyncList.new(list: unsynced_issues.concat(synced_issues), adapter: adapter, repo: repo_name) }
 
       it 'calls adapter only for unsynced issue' do
+        sync_list.sync
         expect(adapter).to have_received(:create_issue).with(repo_name, 'foo', 'bar').once
       end
     end

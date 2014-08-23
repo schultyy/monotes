@@ -8,9 +8,12 @@ module Monotes
     end
 
     def sync
-      @list.find_all {|issue| issue.unsynced }.each do |issue|
+      unsynced = @list.find_all {|issue| issue.unsynced }
+      unsynced.map do |issue|
         result = @adapter.create_issue(@repository, issue.title, issue.body)
+        issue.number = result.number
         yield(result) if block_given?
+        issue
       end
     end
   end

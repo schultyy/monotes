@@ -63,7 +63,9 @@ module Monotes
         issues = load_issues(repo_name, username).map { |i| Monotes::Models::Issue.new(i) }
         adapter = Octokit::Client.new(netrc: true)
         sync_list = Monotes::SyncList.new(list: issues, repo: repository, adapter: adapter)
-        sync_list.sync
+        sync_list.sync do |issue|
+          puts "Synced issue #{issue.title}"
+        end
       end
 
       private

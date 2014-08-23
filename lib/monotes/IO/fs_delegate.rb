@@ -5,9 +5,17 @@ module Monotes
     class FSDelegate
       include Monotes::AppDirectory
 
-      def write(filename, content)
-        File.open(File.join(app_path, filename), 'w') do |handle|
-          handle.write(content)
+      #
+      # issues: Issues represented as Hash
+      #
+      def save(username, repository, issues)
+        if !File.directory?(app_path)
+          Dir.mkdir(app_path)
+        end
+        user_folder = File.join(app_path, username)
+        Dir.mkdir(user_folder) if !File.directory?(user_folder)
+        File.open(File.join(user_folder, "#{repository}.yaml"), "w") do |handle|
+          handle.write(issues.to_yaml)
         end
       end
     end

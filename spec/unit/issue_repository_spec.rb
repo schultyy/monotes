@@ -30,12 +30,7 @@ describe Monotes::IssueRepository do
 
     it 'saves a single issue' do
       repository.save(issue)
-      expect(context).to have_received(:save).with('franz', 'franz-seins', issue.to_yaml)
-    end
-
-    it 'saves a list of issues' do
-      repository.save(issues)
-      expect(context).to have_received(:save).twice
+      expect(context).to have_received(:save).with('franz', 'franz-seins', [issue.to_hash])
     end
   end
 end

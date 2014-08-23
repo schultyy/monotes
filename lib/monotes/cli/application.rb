@@ -4,6 +4,7 @@ require 'netrc'
 require 'octokit'
 require 'monotes/authenticator'
 require 'monotes/issue_download'
+require 'monotes/issue_repository'
 require 'monotes/models/issue'
 require 'monotes/app_directory'
 require 'monotes/body_text'
@@ -34,9 +35,8 @@ module Monotes
         puts "Downloading issues for #{repository}..."
         downloader = Monotes::IssueDownload.new(Octokit)
         issues = downloader.download(repository)
-        save_issues(*split_repository_identifier(repository), issues.map do |issue|
-          issue.to_hash
-        end)
+        repository = Monotes::IssueRepository.build(repository: repository)
+        repository.save(issues)
       end
 
       desc "show REPOSITORY", "Show downloaded issues"
@@ -74,17 +74,6 @@ module Monotes
       def load_issues(repository, username)
         abs_path = File.join(app_path, username, "#{repository}.yaml")
         YAML.load_file(abs_path)
-      end
-
-      def save_issues(username, repository, issues)
-        if !File.directory?(app_path)
-          Dir.mkdir(app_path)
-        end
-        user_folder = File.join(app_path, username)
-        Dir.mkdir(user_folder) if !File.directory?(user_folder)
-        File.open(File.join(user_folder, "#{repository}.yaml"), "w") do |handle|
-          handle.write(issues.to_yaml)
-        end
       end
 
       def split_repository_identifier(repo)

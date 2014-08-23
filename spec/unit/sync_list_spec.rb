@@ -32,9 +32,10 @@ describe Monotes::SyncList do
   context '#sync' do
     let(:unsynced_issues) { build_list(:issue, 1, number: 0, title: 'foo', body:'bar') }
     let(:synced_issues) { build_list(:issue, 1, number: 45, title: 'baz', body:'yadda yadda') }
+    let(:issue_result) { double('Issue Result') }
 
     before(:each) do
-      allow(adapter).to receive(:create_issue)
+      allow(adapter).to receive(:create_issue) { issue_result }
       sync_list.sync
     end
 
@@ -49,6 +50,12 @@ describe Monotes::SyncList do
         block_called = false
         sync_list.sync { block_called = true }
         expect(block_called).to be true
+      end
+
+      it 'calls block with result from adapter call' do
+        block_result = nil
+        sync_list.sync { |issue| block_result = issue }
+        expect(block_result).to eq issue_result
       end
     end
 

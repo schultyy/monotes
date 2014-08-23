@@ -16,6 +16,12 @@ module Monotes
       @context.save(*@repository.split('/'), issues)
     end
 
+    def load
+      @context.load(*@repository.split('/')).map do |issue_hash|
+        Monotes::Models::Issue.new(issue_hash)
+      end
+    end
+
     def self.build(args)
       context = Monotes::IO::FSDelegate.new
       Monotes::IssueRepository.new(args.merge(:context => context))

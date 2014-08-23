@@ -40,28 +40,28 @@ module Monotes
       end
 
       desc "show REPOSITORY", "Show downloaded issues"
-      def show(repository)
-        username, repository = split_repository_identifier(repository)
-        issues = load_issues(repository, username)
+      def show(repository_name)
+        repository = Monotes::IssueRepository.build(repository: repository_name)
+        issues = repository.load
         issues.map do |issue|
-          STDOUT.puts "#{issue.fetch(:number)} - #{issue.fetch(:title)}"
+          STDOUT.puts "#{issue.number} - #{issue.title}"
         end
       end
 
       desc "create REPOSITORY TITLE", "Creates a new local issue"
-      def create(repository, title)
+      def create(repository_name, title)
         text = Monotes::BodyText.new(title)
         issue = text.create_issue
-        username, repository = split_repository_identifier(repository)
-        issues = load_issues(repository, username)
+        repository = Monotes::IssueRepository.build(repository: repository_name)
+        issues = repository.load
         issues << issue.to_hash
-        save_issues(username, repository, issues)
+        repository.save(issues)
       end
 
       desc "sync REPOSITORY", "Synchronizes local issues with GitHub"
-      def sync(repository)
-        username, repo_name = split_repository_identifier(repository)
-        issues = load_issues(repo_name, username).map { |i| Monotes::Models::Issue.new(i) }
+      def sync(repository_name)
+        repository = Monotes::IssueRepository.build(repository: repository_name)
+        issues = repository.load
         adapter = Octokit::Client.new(netrc: true)
         sync_list = Monotes::SyncList.new(list: issues, repo: repository, adapter: adapter)
         sync_list.sync do |issue|
@@ -70,11 +70,6 @@ module Monotes
       end
 
       private
-
-      def load_issues(repository, username)
-        abs_path = File.join(app_path, username, "#{repository}.yaml")
-        YAML.load_file(abs_path)
-      end
 
       def split_repository_identifier(repo)
         repo.split('/')

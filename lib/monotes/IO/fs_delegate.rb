@@ -18,6 +18,11 @@ module Monotes
           handle.write(issues.to_yaml)
         end
       end
+
+      def load(username, repository)
+        abs_path = File.join(app_path, username, "#{repository}.yaml")
+        YAML.load_file(abs_path)
+      end
     end
   end
 end

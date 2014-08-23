@@ -6,6 +6,8 @@ describe Monotes::IssueRepository do
   let(:issues) { build_list(:issue, 2) }
   let(:context) { double('fs context') }
   let(:repository_name) { 'franz/franz-seins' }
+  let(:issue) { issues.first }
+  subject(:repository) { Monotes::IssueRepository.new(repository: repository_name, context: context) }
 
   context '#initialize' do
     it 'accepts context and repository' do
@@ -22,8 +24,6 @@ describe Monotes::IssueRepository do
   end
 
   context '#save' do
-    let(:repository) { Monotes::IssueRepository.new(repository: repository_name, context: context) }
-    let(:issue) { issues.first }
     before do
       allow(context).to receive(:save)
     end
@@ -31,6 +31,25 @@ describe Monotes::IssueRepository do
     it 'saves a single issue' do
       repository.save(issue)
       expect(context).to have_received(:save).with('franz', 'franz-seins', [issue.to_hash])
+    end
+  end
+
+  context '#load' do
+    before do
+      allow(context).to receive(:load).and_return(attributes_for_list(:issue, 2))
+    end
+
+    it 'returns a list of issues' do
+      expect(repository.load.length).to be > 0
+    end
+
+    context 'result set' do
+      context 'element' do
+        it 'is of type Issue' do
+          issue = repository.load.first
+          expect(issue.class).to eq Monotes::Models::Issue
+        end
+      end
     end
   end
 end

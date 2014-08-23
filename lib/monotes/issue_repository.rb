@@ -11,7 +11,7 @@ module Monotes
     def save(args)
       issues = Array(args)
       issues.each do |issue|
-        @context.save(issue.to_yaml)
+        @context.save(*@repository.split('/'), issue.to_yaml)
       end
     end
   end

@@ -19,15 +19,28 @@ module Monotes
       def login
         print "Username > "
         username = STDIN.gets.chomp
+        validate!("username", username)
         print "Password > "
         password = STDIN.noecho(&:gets).chomp
+        validate!("password", password)
         puts "\n"
         authenticator = Monotes::Authenticator.new(Octokit::Client)
-        oauth_token = authenticator.get_oauth_token(username, password) do
-          print "Two-Factor token > "
-          STDIN.gets.chomp
+        begin
+          oauth_token = authenticator.get_oauth_token(username, password) do
+            print "Two-Factor token > "
+            token = STDIN.gets.chomp
+            validate!("Two-Factor token", token)
+            token
+          end
+        rescue Octokit::Unauthorized => unauthorized
+          puts "Unauthorized: #{unauthorized.message}"
+          exit 77
+        rescue Exception => e
+          puts "FATAL: #{e.message}"
+          exit 74
+        else
+          write_to_netrc(username, oauth_token.token)
         end
-        write_to_netrc(username, oauth_token.token)
       end
 
       desc "download REPOSITORY", "Download issues for a repository"
@@ -71,6 +84,13 @@ module Monotes
       end
 
       private
+
+      def validate!(name, param)
+        if param.nil? || param.empty?
+          puts "Fatal: #{name} cannot be empty"
+          exit 74
+        end
+      end
 
       def split_repository_identifier(repo)
         repo.split('/')

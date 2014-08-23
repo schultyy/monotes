@@ -1,17 +1,18 @@
+require 'yaml'
+
 module Monotes
   class IssueList
 
-    def initialize(issues, fs_delegate)
-      @issues = issues
-      @fs = fs_delegate
+    def initialize(args)
+      @fs = args.fetch(:fs)
+      @repository = args.fetch(:repository)
     end
 
-    def save_all
-
-    end
-
-    def save
-
+    def save(args)
+      issues = Array(args)
+      issues.each do |issue|
+        @fs.save(issue.to_yaml)
+      end
     end
   end
 end

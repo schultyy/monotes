@@ -3,6 +3,7 @@ require 'yaml'
 require 'netrc'
 require 'octokit'
 require 'monotes/authenticator'
+require 'monotes/issue_download'
 require 'monotes/models/issue'
 require 'monotes/app_directory'
 require 'monotes/body_text'
@@ -31,9 +32,10 @@ module Monotes
       desc "download REPOSITORY", "Download issues for a repository"
       def download(repository)
         puts "Downloading issues for #{repository}..."
-        issues = Octokit.list_issues(repository)
+        downloader = Monotes::IssueDownload.new(Octokit)
+        issues = downloader.download(repository)
         save_issues(*split_repository_identifier(repository), issues.map do |issue|
-          Monotes::Models::Issue.new(issue).to_hash
+          issue.to_hash
         end)
       end
 

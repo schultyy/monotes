@@ -41,8 +41,14 @@ describe Monotes::SyncList do
     context 'with unsynced issues' do
       subject(:sync_list) { Monotes::SyncList.new(list: unsynced_issues, adapter: adapter, repo: repo_name) }
 
-      it 'calls adapter to save issue' do
+      it 'calls adapter to create issue' do
         expect(adapter).to have_received(:create_issue).with(repo_name, 'foo', 'bar')
+      end
+
+      it 'calls block for each issue' do
+        block_called = false
+        sync_list.sync { block_called = true }
+        expect(block_called).to be true
       end
     end
 

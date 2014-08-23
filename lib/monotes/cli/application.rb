@@ -32,8 +32,7 @@ module Monotes
       def download(repository)
         puts "Downloading issues for #{repository}..."
         issues = Octokit.list_issues(repository)
-        username, repository = split_repository_identifier(repository)
-        save_issues(username, repository, issues.map do |issue|
+        save_issues(*split_repository_identifier(repository), issues.map do |issue|
           Monotes::Models::Issue.new(issue).to_hash
         end)
       end

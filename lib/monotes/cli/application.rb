@@ -36,8 +36,8 @@ module Monotes
           puts "Unauthorized: #{unauthorized.message}"
           exit 77
         rescue Exception => e
-          puts "FATAL: #{e.message}"
-          exit 74
+          fatal!(e)
+
         else
           write_to_netrc(username, oauth_token.token)
         end
@@ -47,7 +47,11 @@ module Monotes
       def download(repository)
         puts "Downloading issues for #{repository}..."
         downloader = Monotes::IssueDownload.new(Octokit)
-        issues = downloader.download(repository)
+        begin
+          issues = downloader.download(repository)
+        rescue Exception => exc
+          fatal!(exc)
+        end
         repository = Monotes::IssueRepository.build(repository: repository)
         repository.save(issues)
       end
@@ -75,15 +79,23 @@ module Monotes
         issues = repository.load
         already_synced = issues.reject { |i| i.unsynced }
         adapter = Octokit::Client.new(netrc: true)
-        sync_list = Monotes::SyncList.new(list: issues, repo: repository_name, adapter: adapter)
-        synced = sync_list.sync do |issue|
-          puts "Synced issue #{issue.title}"
+        begin
+          sync_list = Monotes::SyncList.new(list: issues, repo: repository_name, adapter: adapter)
+          synced = sync_list.sync do |issue|
+            puts "Synced issue #{issue.title}"
+          end
+        rescue Exception => exc
+          fatal!(exc)
         end
-
         repository.save(already_synced.concat(synced))
       end
 
       private
+
+      def fatal!(exc)
+        puts "FATAL: #{exc.message}"
+        exit 74
+      end
 
       def validate!(name, param)
         if param.nil? || param.empty?

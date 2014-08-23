@@ -1,3 +1,5 @@
+require 'monotes/models/issue'
+
 module Monotes
   class SyncList
 
@@ -11,9 +13,8 @@ module Monotes
       unsynced = @list.find_all {|issue| issue.unsynced }
       unsynced.map do |issue|
         result = @adapter.create_issue(@repository, issue.title, issue.body)
-        issue.number = result.number
         yield(result) if block_given?
-        issue
+        Monotes::Models::Issue.new(result.to_hash)
       end
     end
   end

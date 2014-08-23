@@ -32,10 +32,9 @@ describe Monotes::SyncList do
   context '#sync' do
     let(:unsynced_issues) { build_list(:issue, 1, number: 0, title: 'foo', body:'bar') }
     let(:synced_issues) { build_list(:issue, 1, number: 45, title: 'baz', body:'yadda yadda') }
-    let(:issue_result) { double('Issue Result') }
+    let(:issue_result) { attributes_for(:issue, number: 1, id: 1) }
 
     before(:each) do
-      allow(issue_result).to receive(:number).and_return(1)
       allow(adapter).to receive(:create_issue) { issue_result }
     end
 
@@ -64,6 +63,10 @@ describe Monotes::SyncList do
           it 'has number' do
             result = sync_list.sync.first
             expect(result.unsynced).to be false
+          end
+          it 'has id' do
+            result = sync_list.sync.first
+            expect(result.id).to_not eq 0
           end
         end
       end

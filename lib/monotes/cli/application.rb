@@ -46,7 +46,7 @@ module Monotes
       desc "download REPOSITORY", "Download issues for a repository"
       def download(repository)
         STDOUT.puts "Downloading issues for #{repository}..."
-        downloader = Monotes::IssueDownload.new(Octokit)
+        downloader = Monotes::IssueDownload.new(Octokit::Client.new(netrc: true))
         begin
           issues = downloader.download(repository)
         rescue Exception => exc

@@ -61,7 +61,11 @@ module Monotes
         repository = Monotes::IssueRepository.build(repository: repository_name)
         issues = repository.load
         issues.map do |issue|
-          STDOUT.puts "#{issue.number} - #{issue.title}"
+          if issue.unsynced?
+            STDOUT.puts "(new) - #{issue.title}"
+          else
+            STDOUT.puts "#{issue.number} - #{issue.title}"
+          end
         end
       end
 

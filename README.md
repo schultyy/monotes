@@ -59,10 +59,10 @@ Then `vim` opens and you can insert your issue content in markdown. When
 you save and quit, the issue gets created.
 
 
-### Sync issues
+### Push issues
 
 ```bash
-$ monotes sync 'schultyy/monotes'
+$ monotes push 'schultyy/monotes'
 ```
 
 ## Contributing

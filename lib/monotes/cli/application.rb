@@ -82,8 +82,8 @@ module Monotes
         repository.append(issue)
       end
 
-      desc "sync REPOSITORY", "Synchronizes local issues with GitHub"
-      def sync(repository_name)
+      desc "push REPOSITORY", "Pushes local issues to GitHub"
+      def push(repository_name)
         repository = Monotes::IssueRepository.build(repository: repository_name)
         issues = repository.load
         already_synced = issues.reject { |i| i.unsynced? }
@@ -91,7 +91,7 @@ module Monotes
         begin
           sync_list = Monotes::SyncList.new(list: issues, repo: repository_name, adapter: adapter)
           synced = sync_list.sync do |issue|
-            say "Synced issue #{issue.title}", :green
+            say "Synced '#{issue.title}' - ID #{issue.number}", :green
           end
         rescue Exception => exc
           fatal!(exc)

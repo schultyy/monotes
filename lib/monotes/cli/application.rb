@@ -40,9 +40,9 @@ module Monotes
         end
       end
 
-      desc "download REPOSITORY", "Download issues for a repository"
-      def download(repository)
-        say "Downloading issues for #{repository}...", :green
+      desc "pull REPOSITORY", "Pulls issues for a repository"
+      def pull(repository)
+        say "Pulling issues for #{repository}...", :green
         begin
           api_client = Octokit::Client.new(netrc: true)
           downloader = Monotes::IssueDownload.new(api_client)

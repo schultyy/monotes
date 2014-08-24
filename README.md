@@ -39,10 +39,10 @@ Password: <Password>
 Your 2FA token: <Token>
 ```
 
-### Download issues for repository
+### Pull issues for repository
 
 ```bash
-$ monotes download 'schultyy/monotes'
+$ monotes pull 'schultyy/monotes'
 ```
 
 ### Browse downloaded issues

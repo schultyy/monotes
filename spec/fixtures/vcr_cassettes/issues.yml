@@ -1,0 +1,82 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://schultyy:76cbf5dfd21f4c9251d0dc061254a70db8542461@api.github.com/repos/schultyy/pulp/issues
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 3.3.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Sun, 24 Aug 2014 15:03:08 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4997'
+      X-Ratelimit-Reset:
+      - '1408895445'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Etag:
+      - '"b8e93fff30cfb7651039d177a15abd26"'
+      X-Oauth-Scopes:
+      - user, repo
+      X-Accepted-Oauth-Scopes:
+      - ''
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      X-Github-Media-Type:
+      - github.v3; format=json
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      Content-Security-Policy:
+      - default-src 'none'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - 4FC5C1B3:0874:210F6A7F:53F9FEAC
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Served-By:
+      - 132026e9262a0093e437f99db5f1e499
+    body:
+      encoding: UTF-8
+      string: '[{"url":"https://api.github.com/repos/schultyy/pulp/issues/4","labels_url":"https://api.github.com/repos/schultyy/pulp/issues/4/labels{/name}","comments_url":"https://api.github.com/repos/schultyy/pulp/issues/4/comments","events_url":"https://api.github.com/repos/schultyy/pulp/issues/4/events","html_url":"https://github.com/schultyy/pulp/issues/4","id":41007643,"number":4,"title":"The
+        test issue 54","user":{"login":"schultyy","id":235808,"avatar_url":"https://avatars.githubusercontent.com/u/235808?v=2","gravatar_id":"8fb4c4eea4580647ac37881cec8606aa","url":"https://api.github.com/users/schultyy","html_url":"https://github.com/schultyy","followers_url":"https://api.github.com/users/schultyy/followers","following_url":"https://api.github.com/users/schultyy/following{/other_user}","gists_url":"https://api.github.com/users/schultyy/gists{/gist_id}","starred_url":"https://api.github.com/users/schultyy/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/schultyy/subscriptions","organizations_url":"https://api.github.com/users/schultyy/orgs","repos_url":"https://api.github.com/users/schultyy/repos","events_url":"https://api.github.com/users/schultyy/events{/privacy}","received_events_url":"https://api.github.com/users/schultyy/received_events","type":"User","site_admin":false},"labels":[],"state":"open","locked":false,"assignee":null,"milestone":null,"comments":0,"created_at":"2014-08-24T12:41:28Z","updated_at":"2014-08-24T12:41:28Z","closed_at":null,"body":"gedoens
+        geodnes\n"},{"url":"https://api.github.com/repos/schultyy/pulp/issues/3","labels_url":"https://api.github.com/repos/schultyy/pulp/issues/3/labels{/name}","comments_url":"https://api.github.com/repos/schultyy/pulp/issues/3/comments","events_url":"https://api.github.com/repos/schultyy/pulp/issues/3/events","html_url":"https://github.com/schultyy/pulp/issues/3","id":41007611,"number":3,"title":"The
+        test issue","user":{"login":"schultyy","id":235808,"avatar_url":"https://avatars.githubusercontent.com/u/235808?v=2","gravatar_id":"8fb4c4eea4580647ac37881cec8606aa","url":"https://api.github.com/users/schultyy","html_url":"https://github.com/schultyy","followers_url":"https://api.github.com/users/schultyy/followers","following_url":"https://api.github.com/users/schultyy/following{/other_user}","gists_url":"https://api.github.com/users/schultyy/gists{/gist_id}","starred_url":"https://api.github.com/users/schultyy/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/schultyy/subscriptions","organizations_url":"https://api.github.com/users/schultyy/orgs","repos_url":"https://api.github.com/users/schultyy/repos","events_url":"https://api.github.com/users/schultyy/events{/privacy}","received_events_url":"https://api.github.com/users/schultyy/received_events","type":"User","site_admin":false},"labels":[],"state":"open","locked":false,"assignee":null,"milestone":null,"comments":0,"created_at":"2014-08-24T12:40:27Z","updated_at":"2014-08-24T12:40:27Z","closed_at":null,"body":"fdsfdsklfjdslfsdjflsdjfl;\n"},{"url":"https://api.github.com/repos/schultyy/pulp/issues/2","labels_url":"https://api.github.com/repos/schultyy/pulp/issues/2/labels{/name}","comments_url":"https://api.github.com/repos/schultyy/pulp/issues/2/comments","events_url":"https://api.github.com/repos/schultyy/pulp/issues/2/events","html_url":"https://github.com/schultyy/pulp/issues/2","id":40983180,"number":2,"title":"Second
+        issue","user":{"login":"schultyy","id":235808,"avatar_url":"https://avatars.githubusercontent.com/u/235808?v=2","gravatar_id":"8fb4c4eea4580647ac37881cec8606aa","url":"https://api.github.com/users/schultyy","html_url":"https://github.com/schultyy","followers_url":"https://api.github.com/users/schultyy/followers","following_url":"https://api.github.com/users/schultyy/following{/other_user}","gists_url":"https://api.github.com/users/schultyy/gists{/gist_id}","starred_url":"https://api.github.com/users/schultyy/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/schultyy/subscriptions","organizations_url":"https://api.github.com/users/schultyy/orgs","repos_url":"https://api.github.com/users/schultyy/repos","events_url":"https://api.github.com/users/schultyy/events{/privacy}","received_events_url":"https://api.github.com/users/schultyy/received_events","type":"User","site_admin":false},"labels":[],"state":"open","locked":false,"assignee":null,"milestone":null,"comments":0,"created_at":"2014-08-23T19:44:24Z","updated_at":"2014-08-23T19:44:24Z","closed_at":null,"body":"This
+        is the second issue\n"},{"url":"https://api.github.com/repos/schultyy/pulp/issues/1","labels_url":"https://api.github.com/repos/schultyy/pulp/issues/1/labels{/name}","comments_url":"https://api.github.com/repos/schultyy/pulp/issues/1/comments","events_url":"https://api.github.com/repos/schultyy/pulp/issues/1/events","html_url":"https://github.com/schultyy/pulp/issues/1","id":40982188,"number":1,"title":"First
+        issue","user":{"login":"schultyy","id":235808,"avatar_url":"https://avatars.githubusercontent.com/u/235808?v=2","gravatar_id":"8fb4c4eea4580647ac37881cec8606aa","url":"https://api.github.com/users/schultyy","html_url":"https://github.com/schultyy","followers_url":"https://api.github.com/users/schultyy/followers","following_url":"https://api.github.com/users/schultyy/following{/other_user}","gists_url":"https://api.github.com/users/schultyy/gists{/gist_id}","starred_url":"https://api.github.com/users/schultyy/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/schultyy/subscriptions","organizations_url":"https://api.github.com/users/schultyy/orgs","repos_url":"https://api.github.com/users/schultyy/repos","events_url":"https://api.github.com/users/schultyy/events{/privacy}","received_events_url":"https://api.github.com/users/schultyy/received_events","type":"User","site_admin":false},"labels":[],"state":"open","locked":false,"assignee":null,"milestone":null,"comments":0,"created_at":"2014-08-23T18:54:43Z","updated_at":"2014-08-23T18:54:43Z","closed_at":null,"body":"banane\n"}]'
+    http_version: 
+  recorded_at: Sun, 24 Aug 2014 15:03:08 GMT
+recorded_with: VCR 2.9.2

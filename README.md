@@ -1,5 +1,7 @@
 [![Build
 Status](https://travis-ci.org/schultyy/monotes.svg?branch=master)](https://travis-ci.org/schultyy/monotes)
+[![Code
+Climate](https://codeclimate.com/github/schultyy/monotes/badges/gpa.svg)](https://codeclimate.com/github/schultyy/monotes)
 # Monotes
 
 Monotes is a GitHub Issues commandline client.

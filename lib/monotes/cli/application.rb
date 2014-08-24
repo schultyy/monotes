@@ -17,8 +17,7 @@ module Monotes
 
       desc "login", "Login into GitHub"
       def login
-        print "Username > "
-        username = STDIN.gets.chomp
+        username = ask("Username > ")
         validate!("username", username)
         print "Password > "
         password = STDIN.noecho(&:gets).chomp
@@ -33,11 +32,10 @@ module Monotes
             token
           end
         rescue Octokit::Unauthorized => unauthorized
-          STDERR.puts "Unauthorized: #{unauthorized.message}"
+          say "Unauthorized: #{unauthorized.message}", :red
           exit 77
         rescue Exception => e
           fatal!(e)
-
         else
           write_to_netrc(username, oauth_token.token)
         end
@@ -45,9 +43,10 @@ module Monotes
 
       desc "download REPOSITORY", "Download issues for a repository"
       def download(repository)
-        STDOUT.puts "Downloading issues for #{repository}..."
-        downloader = Monotes::IssueDownload.new(Octokit::Client.new(netrc: true))
+        say "Downloading issues for #{repository}...", :green
         begin
+          api_client = Octokit::Client.new(netrc: true)
+          downloader = Monotes::IssueDownload.new(api_client)
           issues = downloader.download(repository)
         rescue Exception => exc
           fatal!(exc)
@@ -91,7 +90,7 @@ module Monotes
         begin
           sync_list = Monotes::SyncList.new(list: issues, repo: repository_name, adapter: adapter)
           synced = sync_list.sync do |issue|
-            STDOUT.puts "Synced issue #{issue.title}"
+            say "Synced issue #{issue.title}", :green
           end
         rescue Exception => exc
           fatal!(exc)
@@ -102,13 +101,13 @@ module Monotes
       private
 
       def fatal!(exc)
-        STDERR.puts "FATAL: #{exc.message}"
+        say "FATAL: #{exc.message}", :red
         exit 74
       end
 
       def validate!(name, param)
         if param.nil? || param.empty?
-          STDERR.puts "Fatal: #{name} cannot be empty"
+          say "Fatal: #{name} cannot be empty", :red
           exit 74
         end
       end

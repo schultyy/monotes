@@ -34,6 +34,26 @@ describe Monotes::IssueRepository do
     end
   end
 
+  context '#merge' do
+    let(:upstream_issues) { build_list(:issue, 1, number: 5) }
+    let(:existing_issues) { build_list(:issue, 2, number: 0, title: 'existing') }
+
+    before do
+      allow(context).to receive(:save)
+      hashes = existing_issues.map{|i|i.to_hash}
+      allow(context).to receive(:load).and_return(hashes)
+      repository.merge(upstream_issues)
+    end
+
+    context 'without conflicts' do
+      it 'does not overwrite existing issues' do
+        expect(context).to have_received(:save) do |user, repo, issues|
+          expect(issues.length).to eq 3
+        end
+      end
+    end
+  end
+
   context '#has_issues?' do
     context 'with issues' do
       before do

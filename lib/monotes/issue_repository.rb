@@ -29,13 +29,24 @@ module Monotes
       end
     end
 
+    def has_issues?
+      @context.load.length > 0
+    end
+
+    def merge(new_issues)
+      resulting = self.load
+      ids = resulting.map {|i| i.number }
+      new_issues.each do |issue|
+        unless ids.include?(issue.number)
+          resulting << issue
+        end
+      end
+      save(resulting)
+    end
+
     def self.build(args)
       context = Monotes::IO::FSDelegate.new
       Monotes::IssueRepository.new(args.merge(:context => context))
-    end
-
-    def has_issues?
-      @context.load.length > 0
     end
   end
 end

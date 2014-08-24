@@ -67,9 +67,9 @@ module Monotes
 
         issues.map do |issue|
           if issue.unsynced?
-            say "(new) - #{issue.title}", :yellow
+            say "(new)\t- #{issue.title}", :yellow
           else
-            say "#{issue.number} - #{issue.title}", :green
+            say "#{issue.number}\t- #{issue.title}", :green
           end
         end
       end

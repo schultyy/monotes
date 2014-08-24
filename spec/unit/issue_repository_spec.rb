@@ -34,6 +34,27 @@ describe Monotes::IssueRepository do
     end
   end
 
+  context '#has_issues?' do
+    context 'with issues' do
+      before do
+        allow(context).to receive(:load).and_return(attributes_for_list(:issue, 2))
+      end
+
+      it 'returns true' do
+        expect(repository.has_issues?).to be true
+      end
+    end
+    context 'without issues' do
+      before do
+        allow(context).to receive(:load).and_return([])
+      end
+
+      it 'returns false' do
+        expect(repository.has_issues?).to be false
+      end
+    end
+  end
+
   context '#load' do
     before do
       allow(context).to receive(:load).and_return(attributes_for_list(:issue, 2))

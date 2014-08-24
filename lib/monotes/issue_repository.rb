@@ -33,5 +33,9 @@ module Monotes
       context = Monotes::IO::FSDelegate.new
       Monotes::IssueRepository.new(args.merge(:context => context))
     end
+
+    def has_issues?
+      @context.load.length > 0
+    end
   end
 end

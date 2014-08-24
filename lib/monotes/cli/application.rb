@@ -53,6 +53,7 @@ module Monotes
         end
         repository = Monotes::IssueRepository.build(repository: repository)
         repository.save(issues)
+        say "Downloaded #{issues.length} issues", :green
       end
 
       desc "show REPOSITORY", "Show downloaded issues"
@@ -66,9 +67,9 @@ module Monotes
 
         issues.map do |issue|
           if issue.unsynced?
-            STDOUT.puts "(new) - #{issue.title}"
+            say "(new) - #{issue.title}", :yellow
           else
-            STDOUT.puts "#{issue.number} - #{issue.title}"
+            say "#{issue.number} - #{issue.title}", :green
           end
         end
       end

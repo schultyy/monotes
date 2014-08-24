@@ -37,10 +37,9 @@ module Monotes
       existing = load
       existing_ids = existing.map { |i| i.number }
       upstream_ids = upstream_issues.map { |i| i.number }
-      resulting = existing.clone
+      resulting = existing.find_all { |i| i.number == 0 || upstream_ids.include?(i.number) }
 
       new = upstream_issues.reject { |i| existing_ids.include?(i) }
-      # in place update of existing ones
       resulting = resulting.map do |issue|
         if upstream_ids.include?(issue.number)
           upstream = upstream_issues.find {|i| i.number }

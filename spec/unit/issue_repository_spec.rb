@@ -71,6 +71,7 @@ describe Monotes::IssueRepository do
           end
         end
       end
+
       context 'local is newer' do
         let(:upstream_issues) { build_list(:issue, 1, title: 'upstream', number: 5, updated_at: DateTime.parse("2014-08-24 08:30:14")) }
         let(:existing_issues) { build_list(:issue, 1, title: 'local', number: 5, updated_at: DateTime.parse("2014-08-24 10:30:14")) }
@@ -78,6 +79,18 @@ describe Monotes::IssueRepository do
         it 'keeps local issue' do
           expect(context).to have_received(:save) do |user, repo, issues|
             expect(issues.first.fetch(:title)).to eq 'local'
+          end
+        end
+      end
+
+      context 'upstream is marked as resolved' do
+        let(:upstream_issues) { build_list(:issue, 1, title: 'upstream', number: 6, updated_at: DateTime.parse("2014-08-24 10:30:14")) }
+        let(:existing_issues) { [build(:issue, title: 'local unresolved', number: 4, updated_at: DateTime.parse("2014-08-24 10:30:14")),
+                                 build(:issue, title: 'local unresolved', number: 6, updated_at: DateTime.parse("2014-08-24 10:30:14"))] }
+
+        it 'removes resolved issues locally' do
+          expect(context).to have_received(:save) do |user, repo, issues|
+            expect(issues.find{|i| i.fetch(:number) == 4}).to be nil
           end
         end
       end

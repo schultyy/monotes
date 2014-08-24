@@ -19,8 +19,7 @@ module Monotes
       def login
         username = ask("Username > ")
         validate!("username", username)
-        print "Password > "
-        password = STDIN.noecho(&:gets).chomp
+        password = ask("Password > ", :echo => false)
         validate!("password", password)
         STDOUT.puts "\n"
         authenticator = Monotes::Authenticator.new(Octokit::Client)

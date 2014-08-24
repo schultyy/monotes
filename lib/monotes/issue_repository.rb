@@ -33,15 +33,28 @@ module Monotes
       @context.load.length > 0
     end
 
-    def merge(new_issues)
-      resulting = self.load
-      ids = resulting.map {|i| i.number }
-      new_issues.each do |issue|
-        unless ids.include?(issue.number)
-          resulting << issue
+    def merge(upstream_issues)
+      existing = load
+      existing_ids = existing.map { |i| i.number }
+      upstream_ids = upstream_issues.map { |i| i.number }
+      resulting = existing.clone
+
+      new = upstream_issues.reject { |i| existing_ids.include?(i) }
+      # in place update of existing ones
+      resulting = resulting.map do |issue|
+        if upstream_ids.include?(issue.number)
+          upstream = upstream_issues.find {|i| i.number }
+          if issue.updated_at < upstream.updated_at
+            upstream
+          else
+            issue
+          end
+        else
+          issue
         end
       end
-      save(resulting)
+
+      save(resulting.concat(new).flatten.compact)
     end
 
     def self.build(args)

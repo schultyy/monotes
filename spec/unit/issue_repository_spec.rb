@@ -42,13 +42,43 @@ describe Monotes::IssueRepository do
       allow(context).to receive(:save)
       hashes = existing_issues.map{|i|i.to_hash}
       allow(context).to receive(:load).and_return(hashes)
-      repository.merge(upstream_issues)
     end
 
     context 'without conflicts' do
+      before do
+        repository.merge(upstream_issues)
+      end
+
       it 'does not overwrite existing issues' do
         expect(context).to have_received(:save) do |user, repo, issues|
           expect(issues.length).to eq 3
+        end
+      end
+    end
+
+    context 'with conflicts' do
+      before do
+        repository.merge(upstream_issues)
+      end
+
+      context 'upstream is newer' do
+        let(:upstream_issues) { build_list(:issue, 1, title: 'new', number: 5, updated_at: DateTime.parse("2014-08-24 10:30:14")) }
+        let(:existing_issues) { build_list(:issue, 1, title: 'old', number: 5, updated_at: DateTime.parse("2014-08-24 08:30:14")) }
+
+        it 'replaces local issue with upstream issue' do
+          expect(context).to have_received(:save) do |user, repo, issues|
+            expect(issues.first.fetch(:title)).to eq 'new'
+          end
+        end
+      end
+      context 'local is newer' do
+        let(:upstream_issues) { build_list(:issue, 1, title: 'upstream', number: 5, updated_at: DateTime.parse("2014-08-24 08:30:14")) }
+        let(:existing_issues) { build_list(:issue, 1, title: 'local', number: 5, updated_at: DateTime.parse("2014-08-24 10:30:14")) }
+
+        it 'keeps local issue' do
+          expect(context).to have_received(:save) do |user, repo, issues|
+            expect(issues.first.fetch(:title)).to eq 'local'
+          end
         end
       end
     end

@@ -46,13 +46,13 @@ module Monotes
         begin
           api_client = Octokit::Client.new(netrc: true)
           downloader = Monotes::IssueDownload.new(api_client)
-          issues = downloader.download(repository)
+          upstream_issues = downloader.download(repository)
         rescue Exception => exc
           fatal!(exc)
         end
         repository = Monotes::IssueRepository.build(repository: repository)
-        repository.save(issues)
-        say "Downloaded #{issues.length} issues", :green
+        repository.merge(upstream_issues)
+        say "Downloaded #{upstream_issues.length} issues", :green
       end
 
       desc "show REPOSITORY", "Show downloaded issues"

@@ -50,8 +50,8 @@ module Monotes
         rescue Exception => exc
           fatal!(exc)
         end
-        repository = Monotes::IssueRepository.build(repository: repository)
-        repository.merge(upstream_issues)
+        issue_repository = Monotes::IssueRepository.build(repository: repository)
+        issue_repository.merge(upstream_issues)
         say "Downloaded #{upstream_issues.length} issues", :green
       end
 

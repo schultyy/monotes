@@ -23,7 +23,7 @@ describe Monotes::CLI::Application do
       end
     end
 
-    it 'merges with existing issues' do
+    it 'does not overwrite local issues' do
       VCR.use_cassette('issues') do
         application.pull(repo_name)
         expect(fs_mock).to have_received(:save) do |user, repo_name, issues|

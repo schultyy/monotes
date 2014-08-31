@@ -83,6 +83,18 @@ describe Monotes::IssueRepository do
         end
       end
 
+      context 'both are the same' do
+        let(:upstream_issues) { build_list(:issue, 1, title: 'upstream', number: 5, updated_at: DateTime.parse("2014-08-24 10:30:14")) }
+        let(:existing_issues) { build_list(:issue, 1, title: 'local', number: 5, updated_at: DateTime.parse("2014-08-24 10:30:14")) }
+
+        it 'keeps the issue only once' do
+          expect(context).to have_received(:save) do |user, repo, issues|
+            ids = issues.map{|i| i.fetch(:number)}
+            expect(ids.find_all{|i| i == 5 }.length).to eq 1
+          end
+        end
+      end
+
       context 'upstream is marked as resolved' do
         let(:upstream_issues) { build_list(:issue, 1, title: 'upstream', number: 6, updated_at: DateTime.parse("2014-08-24 10:30:14")) }
         let(:existing_issues) { [build(:issue, title: 'local unresolved', number: 4, updated_at: DateTime.parse("2014-08-24 10:30:14")),

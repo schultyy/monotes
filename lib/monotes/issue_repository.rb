@@ -45,6 +45,8 @@ module Monotes
           upstream = upstream_issues.find {|i| i.number }
           if issue.updated_at < upstream.updated_at
             upstream
+          elsif issue.updated_at == upstream.updated_at
+            nil
           else
             issue
           end

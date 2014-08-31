@@ -22,6 +22,8 @@ module Monotes
       def load(username, repository)
         abs_path = File.join(app_path, username, "#{repository}.yaml")
         YAML.load_file(abs_path)
+      rescue Errno::ENOENT
+        []
       end
     end
   end
